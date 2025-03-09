@@ -1,0 +1,57 @@
+
+/* General Body Style */
+.main-body-error {
+    text-align: center;
+  font-family: 'jost', "urbanist";
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
+  box-sizing: border-box;
+}
+
+
+/* Error Title */
+.error-title {
+    font-family: "urbanist";
+  font-size: clamp(1rem,5vw,2rem);
+  font-weight: 700;
+  color: #d9534f;
+  margin-bottom: 20px;
+}
+
+/* Error Message */
+.error-message {
+    font-size: clamp(.8rem,4vw,1.2rem);
+  margin: 10px 0;
+  color: #555;
+}
+
+/* Error Status */
+.error-status {
+    font-size: clamp(.8rem,4vw,1.2rem);
+  margin: 10px 0;
+  color: #777;
+}
+
+/* Styling the Link */
+.error-link {
+  display: inline-block;
+  margin: 5px;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.error-link:hover {
+  background-color: #0056b3;
+  text-decoration: none;
+}
+
+.error-link:focus {
+  outline: none;
+}
