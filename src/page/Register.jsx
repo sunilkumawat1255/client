@@ -21,7 +21,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8000/register", formData);
+      const response = await axios.post("https://server-rrb4.onrender.com/register", formData);
       toast.success(response.data.msg, { position: "top-right", autoClose: 3000 });
 
       setTimeout(() => {

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 export const DynamicPage = () => {
   const navigate = useNavigate();
-  const backendURL = "http://localhost:8000";
+  const backendURL = "https://server-rrb4.onrender.com";
   const userId = localStorage.getItem("EcomUserId");
 
   // State

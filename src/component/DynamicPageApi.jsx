@@ -1,6 +1,6 @@
 export const DynamicPageApi = async ({ params }) => {
   // =======Backend URL=======
-  const backendURL = "http://localhost:8000"; // Update if hosted
+  const backendURL = "https://server-rrb4.onrender.com"; // Update if hosted
   const productId = params.productID.toString(); // Ensure it's a string
   try {
     const res = await fetch(`${backendURL}/products`);

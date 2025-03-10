@@ -17,11 +17,11 @@ const MyAccount = () => {
   const getUserDetails = async () => {
     try {
       const userRes = await axios.get(
-        `http://localhost:8000/myprofile/${userId}`
+        `https://server-rrb4.onrender.com/myprofile/${userId}`
       );
       setUserDetails(userRes.data);
 
-      const cartRes = await axios.get(`http://localhost:8000/cart/${userId}`);
+      const cartRes = await axios.get(`https://server-rrb4.onrender.com/cart/${userId}`);
       console.log("Cart Items Response:", cartRes.data); // Log the cart items response
       setCartItems(cartRes.data);
 

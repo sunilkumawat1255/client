@@ -21,17 +21,17 @@ const ManageUsers = () => {
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/usersshowdetails/${id}`
+          `https://server-rrb4.onrender.com/api/usersshowdetails/${id}`
         );
         const cartres = await axios.get(
-          `http://localhost:8000/api/usercartdetails/${id}`
+          `https://server-rrb4.onrender.com/api/usercartdetails/${id}`
         );
 
         await Promise.all(
           cartres.data.map(async (curr) => {
             const productsID = curr.product_id;
             const productres = await axios.get(
-              `http://localhost:8000/api/userproductdetails/${productsID}`
+              `https://server-rrb4.onrender.com/api/userproductdetails/${productsID}`
             );
             setProduct((prev) => [...prev, productres.data]);
           })
@@ -68,7 +68,7 @@ const ManageUsers = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/usersupdate/${id}`,
+        `https://server-rrb4.onrender.com/api/usersupdate/${id}`,
         formData
       );
       if (response.status === 200) {
@@ -84,7 +84,7 @@ const ManageUsers = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8000/api/usersdelet/${id}`);
+      await axios.delete(`https://server-rrb4.onrender.com/api/usersdelet/${id}`);
       alert("User  deleted successfully!");
       navigate(-1);
     } catch (error) {

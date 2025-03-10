@@ -15,7 +15,7 @@ const Login = () => {
       const token = localStorage.getItem("AdminUserToken");
       if (token) {
         try {
-          const response = await axios.get("http://localhost:8000/isAuth", {
+          const response = await axios.get("https://server-rrb4.onrender.com/isAuth", {
             headers: { "x-access-token": token },
           });
           if (response.data.login) {
@@ -35,7 +35,7 @@ const Login = () => {
     setLoading(true);
   
     try {
-      const response = await axios.post("http://localhost:8000/adminlogin", {
+      const response = await axios.post("https://server-rrb4.onrender.com/adminlogin", {
         username,
         password,
       });

@@ -25,7 +25,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/users");
+        const response = await axios.get("https://server-rrb4.onrender.com/api/users");
         setUsers(response.data);
         setLoading(false);
       } catch (error) {
@@ -39,7 +39,7 @@ const AdminDashboard = () => {
   // Handle user deletion
   const handleDelete = async (userId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/usersdelet/${userId}`);
+      await axios.delete(`https://server-rrb4.onrender.com/api/usersdelet/${userId}`);
       setUsers(users.filter((user) => user._id !== userId));
       alert("User  deleted successfully!");
     } catch (error) {
@@ -64,7 +64,7 @@ const AdminDashboard = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/products");
+      const response = await axios.get("https://server-rrb4.onrender.com/api/products");
       setProducts(response.data);
       setLoading(false);
     } catch (error) {
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/productsadd",
+        "https://server-rrb4.onrender.com/api/productsadd",
         {
           name: newProduct.name,
           price: newProduct.price,
@@ -126,7 +126,7 @@ const AdminDashboard = () => {
   // Delete Product
   const handleDeleteProduct = async (productId) => {
     try {
-      await axios.delete(`http://localhost:8000/api/products/${productId}`);
+      await axios.delete(`https://server-rrb4.onrender.com/api/products/${productId}`);
       setProducts(products.filter((product) => product._id !== productId));
       alert("Product deleted successfully!");
     } catch (error) {
@@ -161,7 +161,7 @@ const AdminDashboard = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/products/${productId}`,
+        `https://server-rrb4.onrender.com/api/products/${productId}`,
         {
           name: updatedName,
           price: updatedPrice,

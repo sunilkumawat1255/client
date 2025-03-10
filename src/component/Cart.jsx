@@ -23,7 +23,7 @@ const Cart = () => {
     const fetchCart = async () => {
       if (userId) {
         try {
-          const res = await axios.get(`http://localhost:8000/cart/${userId}`);
+          const res = await axios.get(`https://server-rrb4.onrender.com/cart/${userId}`);
           setCartItems(res.data);
         } catch (err) {
           console.error("Error fetching cart:", err);
@@ -58,7 +58,7 @@ const Cart = () => {
   const handleRemoveFromCart = async (cartItemId) => {
     if (!userId) return;
     try {
-      await axios.delete(`http://localhost:8000/cart/${userId}/${cartItemId}`);
+      await axios.delete(`https://server-rrb4.onrender.com/cart/${userId}/${cartItemId}`);
       setCartItems(cartItems.filter((item) => item._id !== cartItemId));
     } catch (error) {
       console.error("Error removing from cart:", error);
@@ -68,7 +68,7 @@ const Cart = () => {
   const handleClearCart = async () => {
     if (userId) {
       try {
-        await axios.delete(`http://localhost:8000/cart/${userId}`);
+        await axios.delete(`https://server-rrb4.onrender.com/cart/${userId}`);
         setCartItems([]);
       } catch (error) {
         console.error("Error clearing cart:", error);
@@ -80,8 +80,8 @@ const Cart = () => {
     setCheckoutLoading(true);
     try {
       if (userId) {
-        await axios.post(`http://localhost:8000/checkout/${userId}`);
-        await axios.delete(`http://localhost:8000/cart/${userId}/clear`);
+        await axios.post(`https://server-rrb4.onrender.com/checkout/${userId}`);
+        await axios.delete(`https://server-rrb4.onrender.com/cart/${userId}/clear`);
         setCartItems([]);
         setShowSuccess(true);
         setTimeout(() => {
@@ -100,7 +100,7 @@ const Cart = () => {
     if (userId) {
       try {
         await axios.put(
-          `http://localhost:8000/cart/${userId}/increment/${cartItemId}`
+          `https://server-rrb4.onrender.com/cart/${userId}/increment/${cartItemId}`
         );
         setCartItems(
           cartItems.map((item) =>
@@ -119,7 +119,7 @@ const Cart = () => {
     if (userId) {
       try {
         await axios.put(
-          `http://localhost:8000/cart/${userId}/decrement/${cartItemId}`
+          `https://server-rrb4.onrender.com/cart/${userId}/decrement/${cartItemId}`
         );
         setCartItems(
           cartItems.map((item) =>

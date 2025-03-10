@@ -15,7 +15,7 @@ const FoodCart = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/products");
+        const res = await axios.get("https://server-rrb4.onrender.com/products");
         setProducts(res.data);
       } catch (err) {
         console.error("Error fetching products:", err);
@@ -25,7 +25,7 @@ const FoodCart = () => {
     const fetchCart = async () => {
       if (userId) {
         try {
-          const res = await axios.get(`http://localhost:8000/cart/${userId}`);
+          const res = await axios.get(`https://server-rrb4.onrender.com/cart/${userId}`);
           setCart(res.data);
         } catch (err) {
           console.error("Error fetching cart:", err);
@@ -44,7 +44,7 @@ const FoodCart = () => {
     }
 
     try {
-      await axios.post(`http://localhost:8000/cart/${userId}`, {
+      await axios.post(`https://server-rrb4.onrender.com/cart/${userId}`, {
         productId: product._id, // Ensure _id is used
         quantity: 1,
       });
@@ -54,7 +54,7 @@ const FoodCart = () => {
         autoClose: 3000,
       });
 
-      const res = await axios.get(`http://localhost:8000/cart/${userId}`);
+      const res = await axios.get(`https://server-rrb4.onrender.com/cart/${userId}`);
       setCart(res.data);
     } catch (error) {
       console.error("Error adding to cart:", error);
@@ -151,7 +151,7 @@ export default FoodCart;
 //   useEffect(() => {
 //     const fetchProducts = async () => {
 //       try {
-//         const res = await axios.get("http://localhost:8000/products");
+//         const res = await axios.get("https://server-rrb4.onrender.com/products");
 //         setProducts(res.data);
 //         // console.log(res)
 //       } catch (err) {
@@ -161,7 +161,7 @@ export default FoodCart;
 //     const fetchCart = async () => {
 //       if (userId) {
 //         try {
-//           const res = await axios.get(`http://localhost:8000/cart/${userId}`);
+//           const res = await axios.get(`https://server-rrb4.onrender.com/cart/${userId}`);
 //           setCart(res.data);
 //         } catch (err) {
 //           console.error("Error fetching cart:", err);
@@ -180,7 +180,7 @@ export default FoodCart;
 //     }
 
 //     try {
-//         await axios.post(`http://localhost:8000/cart/${userId}`, {
+//         await axios.post(`https://server-rrb4.onrender.com/cart/${userId}`, {
 //             productId: product._id,  // Ensure _id is used
 //             quantity: 1,
 //         });
@@ -190,7 +190,7 @@ export default FoodCart;
 //             autoClose: 3000,
 //         });
 
-//         const res = await axios.get(`http://localhost:8000/cart/${userId}`);
+//         const res = await axios.get(`https://server-rrb4.onrender.com/cart/${userId}`);
 //         setCart(res.data);
 //     } catch (error) {
 //         console.error("Error adding to cart:", error);
