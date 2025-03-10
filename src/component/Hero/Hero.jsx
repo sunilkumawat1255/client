@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import heroBg from "../../assests/img/bg2.jpg"; // ✅ Import Background Image
+import heroBg from "../../assests/img/bg2.jpg";
+import s4 from "../../assests/img/s4.png";
+import s5 from "../../assests/img/s5.png";
+import s2 from "../../assests/img/s2.png";
 
 const fruits = [
-  { name: "Strawberry", image: "/img/s8.png" },
-  { name: "Strawberry", image: "/img/s5.png" },
-  { name: "Apple", image: "/img/s2.png" },
+  { name: "Strawberry", image: s4 },
+  { name: "Strawberry", image: s5 },
+  { name: "Apple", image: s2 },
 ];
 
 const Hero = () => {
@@ -16,20 +19,19 @@ const Hero = () => {
     intervalRef.current = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % fruits.length);
     }, 3000);
-
     return () => clearInterval(intervalRef.current);
   }, []);
 
   return (
     <div
-      className="relative w-full h-[50vh] md:h-[60vh] lg:h-[70vh] flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: `url(${heroBg})` }} // Background image with style
+      className="relative w-full h-[60vh] md:h-[75vh] lg:h-[85vh] flex items-center justify-center bg-cover bg-center"
+      style={{ backgroundImage: `url(${heroBg})` }}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+      <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
 
-      {/* Image Slider - Positioned on top */}
-      <div className="absolute top-8 w-full max-w-3xl mx-auto overflow-hidden z-10">
+      {/* Image Slider */}
+      <div className="absolute top-24 w-full max-w-3xl mx-auto overflow-hidden z-10">
         <div
           className="flex transition-transform duration-700 ease-in-out"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -42,7 +44,7 @@ const Hero = () => {
               <motion.img
                 src={fruit.image}
                 alt={fruit.name}
-                className="h-[250px] md:w-56 md:h-56 lg:w-[350px] lg:h-64 object-contain transition-transform transform hover:scale-110 hover:shadow-lg"
+                className="h-[280px] md:w-64 md:h-64 lg:w-[400px] lg:h-[300px] object-contain transition-transform transform hover:scale-110 hover:shadow-xl rounded-xl"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
@@ -52,10 +54,10 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Content Section - Positioned at the bottom */}
-      <div className="absolute bottom-4 w-full text-center text-white px-6">
+      {/* Content Section */}
+      <div className="absolute bottom-6 w-full text-center text-white px-6">
         <motion.h1
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-shadow-md"
+          className="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg"
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -64,7 +66,7 @@ const Hero = () => {
         </motion.h1>
 
         <motion.p
-          className="text-sm sm:text-lg md:text-xl mb-6 text-shadow-md"
+          className="text-lg sm:text-xl md:text-2xl mb-6 drop-shadow-md"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
@@ -75,7 +77,7 @@ const Hero = () => {
         {/* Button Container */}
         <div className="flex justify-center mt-4">
           <motion.button
-            className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full text-sm sm:text-lg transition-all transform hover:scale-105"
+            className="px-8 py-3 bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-semibold rounded-full text-lg shadow-lg transition-all transform hover:scale-105"
             whileHover={{ scale: 1.1 }}
           >
             Shop Now
@@ -87,4 +89,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
