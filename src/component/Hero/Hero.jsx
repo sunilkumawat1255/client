@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import { motion } from "framer-motion";
 import heroBg from "../../assests/img/bg2.jpg"; // ✅ Import Background Image
 
 const fruits = [
