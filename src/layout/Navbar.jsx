@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCartArrowDown } from "react-icons/fa";
+import { IoMdMenu, IoMdClose } from "react-icons/io";
 import "./nav.css";
 
 const Navbar = () => {
@@ -31,21 +32,26 @@ const Navbar = () => {
         🍏 FruitsShop
       </Link>
 
-      <div className="md:hidden cursor-pointer" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-        <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-          <path d="M4 6h16M4 12h16m-7 6h7" />
-        </svg>
-      </div>
+      {/* Mobile Menu Toggle */}
+      <button
+        className="md:hidden text-gray-800 text-2xl"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+      >
+        {isMenuOpen ? <IoMdClose /> : <IoMdMenu />}
+      </button>
 
-      <nav className={`md:flex items-center space-x-6 ${isMenuOpen ? "block absolute top-14 left-0 w-full bg-white p-4 shadow-md" : "hidden md:flex"}`}>
-        <ul className="md:flex space-x-6 text-gray-700">
+      {/* Navigation Links */}
+      <nav
+        className={`absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent md:flex md:items-center space-y-4 md:space-y-0 md:space-x-6 p-6 md:p-0 shadow-md md:shadow-none transition-all duration-300 ease-in-out ${isMenuOpen ? "block" : "hidden"}`}
+      >
+        <ul className="flex flex-col md:flex-row md:space-x-6 text-gray-700">
           <li><Link to="/" className="hover:text-green-500 transition">Home</Link></li>
           <li><Link to="/products" className="hover:text-green-500 transition">Products</Link></li>
           <li><Link to="/contact" className="hover:text-green-500 transition">Contact</Link></li>
         </ul>
 
         {isLoggedIn ? (
-          <div className="flex items-center space-x-4">
+          <div className="flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
             <Link to="/profile" className="relative w-10 h-10 bg-green-500 text-white flex items-center justify-center rounded-full text-lg">
               {userEmail ? userEmail.charAt(0).toUpperCase() : "U"}
             </Link>
