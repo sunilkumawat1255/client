@@ -25,7 +25,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-auto flex flex-col items-center justify-center bg-cover bg-center py-10" style={{ backgroundImage: `url(${heroBg})` }}>
+    <div className="relative w-full h-auto flex flex-col items-center justify-center bg-cover bg-center py-20" style={{ backgroundImage: `url(${heroBg})` }}>
       {/* Navbar */}
       <nav className="absolute top-0 left-0 w-full bg-black bg-opacity-60 p-4 flex justify-between items-center text-white z-20">
         <h1 className="text-2xl font-bold">FruitMart</h1>
