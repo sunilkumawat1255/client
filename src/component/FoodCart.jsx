@@ -11,14 +11,17 @@ const FoodCart = () => {
   const userId = localStorage.getItem("EcomUserId");
   const [, setCart] = useState([]);
   const [imageUrls, setImageUrls] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get("https://server-rrb4.onrender.com/products");
         setProducts(res.data);
+        setLoading(false);
       } catch (err) {
         console.error("Error fetching products:", err);
+        setLoading(false);
       }
     };
 
@@ -82,8 +85,16 @@ const FoodCart = () => {
     setImageUrls(newImageUrls);
   }, [products]);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center text-2xl font-semibold animate-pulse">Loading...</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="container mx-auto px-4 py-10">
+    <div className="container mx-auto px-4 py-10 mt-20">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {products.map((product) => (
           <div
