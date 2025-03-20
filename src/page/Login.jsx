@@ -17,20 +17,35 @@ const Login = () => {
       try {
         const token = localStorage.getItem("Ecomtoken");
         if (token) {
+          // Decode token to check expiration
+          const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
+          const currentTime = Date.now() / 1000; // Convert to seconds
+
+          if (decodedToken.exp < currentTime) {
+            logoutUser(); // Token expired, log out
+            return;
+          }
+
           const response = await axios.get("https://server-rrb4.onrender.com/isAuth", {
             headers: { "x-access-token": token },
           });
+
           if (response.data.login) {
             navigate("/");
           }
         }
       } catch (error) {
         console.error("Auth check failed:", error);
-        localStorage.removeItem("Ecomtoken"); // Clear invalid token
+        logoutUser(); // Log out on any error
       }
     };
     checkAuth();
   }, [navigate]);
+
+  const logoutUser = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,32 +58,29 @@ const Login = () => {
         email,
         password,
       });
-console.log(response,"respnsiseddfdf")
+
       if (response.data.login) {
-        localStorage.setItem("Ecomtoken", response.data.token);
+        const token = response.data.token;
+        localStorage.setItem("Ecomtoken", token);
         localStorage.setItem("EcomUser", response.data.user.username);
         localStorage.setItem("EcomUserId", response.data.user.id);
         localStorage.setItem("EcomEmail", response.data.user.email);
 
-        toast.success(`Welcome, ${response.data.user.username.toUpperCase()} !`, {
+        // Decode token to get expiration time
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        const expiresIn = decodedToken.exp * 1000 - Date.now(); // Time in ms
+
+        // Auto logout when token expires
+        setTimeout(logoutUser, expiresIn);
+
+        toast.success(`Welcome, ${response.data.user.username.toUpperCase()}!`, {
           position: "top-center",
           autoClose: 2000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          style: {
-            color: "#000", // Black text color
-            backgroundColor: "#f9f9f9", // Light background for contrast
-            fontSize: "16px", // Slightly larger font for better readability
-            borderRadius: "8px", // Rounded corners
-            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
-          },
         });
 
         setTimeout(() => {
           navigate("/");
-        }, 2000); 
+        }, 2000);
       } else {
         setMsg(response.data.msg);
         setStatus(true);
@@ -145,4 +157,3 @@ console.log(response,"respnsiseddfdf")
 };
 
 export default Login;
-
