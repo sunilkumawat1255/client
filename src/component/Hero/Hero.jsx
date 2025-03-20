@@ -61,7 +61,7 @@ const Hero = () => {
         <motion.img
           src={fruits[currentIndex].image}
           alt={fruits[currentIndex].name}
-          className="h-[200px] w-[200px] sm:h-[250px] sm:w-[250px] md:w-64 md:h-64 lg:w-[400px] lg:h-[300px] object-contain transition-transform transform hover:scale-110 hover:shadow-xl rounded-xl"
+          className="h-[200px] w-[200px] sm:h-[250px] sm:w-[250px] md:w-64 md:h-64 lg:w-[400px] lg:h-[300px] object-contain transition-transform transform rounded-xl"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
