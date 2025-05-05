@@ -33,11 +33,6 @@ const MyAccount = () => {
     getUserDetails();
   }, []);
 
-  const logout = () => {
-    localStorage.clear();
-    navigate("/");
-  };
-
   const getTotalPrice = () => {
     return cartItems.reduce(
       (total, item) => total + item.quantity * item.product.price,
@@ -60,17 +55,10 @@ const MyAccount = () => {
         <button className="bg-teal-500 text-white px-8 py-3 rounded-lg shadow-lg w-full md:w-auto text-center text-lg font-semibold hover:bg-teal-600 transition duration-300">
           Welcome, {userdatast}
         </button>
-        <button
-          className="bg-red-600 text-white px-8 py-3 rounded-lg shadow-lg hover:bg-red-700 transition duration-300 w-full md:w-auto text-center text-lg font-semibold"
-          onClick={logout}
-        >
-          LogOut
-        </button>
       </div>
 
       {/* Profile Details */}
       <div className="profile-details mb-8 bg-white p-8 rounded-xl shadow-md border border-gray-300">
-        <h3 className="text-2xl font-bold text-gray-800 mb-6">Your Profile</h3>
         <p className="text-lg text-gray-700 mb-3"><strong>Email:</strong> {userDetails.email}</p>
         <p className="text-lg text-gray-700 mb-3"><strong>Phone:</strong> {userDetails.phone}</p>
         <p className="text-lg text-gray-700">
