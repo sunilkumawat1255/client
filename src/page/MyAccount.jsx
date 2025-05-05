@@ -4,7 +4,7 @@ import axios from "axios";
 
 const MyAccount = () => {
   const [cartItems, setCartItems] = useState([]);
-  const [, setUserDetails] = useState({});
+  const [userDetails, setUserDetails] = useState({});
   const [loading, setLoading] = useState(true);
 
   const userId = localStorage.getItem("EcomUserId");
@@ -33,11 +33,6 @@ const MyAccount = () => {
     getUserDetails();
   }, []);
 
-  const logout = () => {
-    localStorage.clear();
-    navigate("/");
-  };
-
   const getTotalPrice = () => {
     return cartItems.reduce(
       (total, item) => total + item.quantity * item.product.price,
@@ -54,24 +49,21 @@ const MyAccount = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 md:p-8 bg-white shadow-lg rounded-lg mt-20">
+    <div className="container mx-auto p-6 md:p-10 bg-gray-50 shadow-xl rounded-lg mt-20">
       {/* Profile & Logout Buttons */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
-        <button className="bg-green-500 text-white px-6 py-2 rounded-lg shadow-md w-full md:w-auto text-center" disabled>
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8 space-y-4 md:space-y-0">
+        <button className="bg-teal-500 text-white px-8 py-3 rounded-lg shadow-lg w-full md:w-auto text-center text-lg font-semibold hover:bg-teal-600 transition duration-300">
           Welcome, {userdatast}
-        </button>
-        <button
-          className="bg-red-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-red-600 transition w-full md:w-auto text-center"
-          onClick={logout}
-        >
-          LogOut
         </button>
       </div>
 
       {/* Profile Details */}
-      <div className="profile-details mb-8 bg-gray-50 p-6 rounded-lg shadow">
-        <h3 className="text-2xl font-bold text-gray-800 mb-4">Your Profile</h3>
-        <p className="text-lg text-gray-700"><strong>Email:</strong> {userEmail}</p>
+      <div className="profile-details mb-8 bg-white p-8 rounded-xl shadow-md border border-gray-300">
+        <p className="text-lg text-gray-700 mb-3"><strong>Email:</strong> {userDetails.email}</p>
+        <p className="text-lg text-gray-700 mb-3"><strong>Phone:</strong> {userDetails.phone}</p>
+        <p className="text-lg text-gray-700">
+          <strong>Address:</strong> {userDetails.houseNo}, {userDetails.street}, {userDetails.city}, {userDetails.state} - {userDetails.pincode}, {userDetails.country}
+        </p>
       </div>
 
       {/* Order Items */}
@@ -81,28 +73,28 @@ const MyAccount = () => {
         {/* Scrollable Table Container */}
         <div className="overflow-x-auto w-full max-w-full">
           <table className="w-full min-w-[600px] bg-white border border-gray-200 shadow-md rounded-lg">
-            <thead className="bg-gray-200 text-gray-700">
+            <thead className="bg-gray-100 text-gray-700">
               <tr>
-                <th className="py-3 px-4 text-left">#</th>
-                <th className="py-3 px-4 text-left">Item Name</th>
-                <th className="py-3 px-4 text-left">Quantity</th>
-                <th className="py-3 px-4 text-left">Price</th>
-                <th className="py-3 px-4 text-left">Total Price</th>
-                <th className="py-3 px-4 text-left">Operation</th>
+                <th className="py-4 px-6 text-left font-medium">#</th>
+                <th className="py-4 px-6 text-left font-medium">Item Name</th>
+                <th className="py-4 px-6 text-left font-medium">Quantity</th>
+                <th className="py-4 px-6 text-left font-medium">Price</th>
+                <th className="py-4 px-6 text-left font-medium">Total Price</th>
+                <th className="py-4 px-6 text-left font-medium">Operation</th>
               </tr>
             </thead>
             <tbody>
               {cartItems.map((item, ind) => (
-                <tr key={ind} className="border-b hover:bg-gray-100 transition">
-                  <td className="py-4 px-4">{ind + 1}</td>
-                  <td className="py-4 px-4 font-medium">{item.product.name}</td>
-                  <td className="py-4 px-4">{item.quantity}</td>
-                  <td className="py-4 px-4">₹{item.product.price}</td>
-                  <td className="py-4 px-4 font-semibold">₹{item.quantity * item.product.price}</td>
-                  <td className="py-4 px-4">
+                <tr key={ind} className="border-b hover:bg-gray-50 transition-all duration-300">
+                  <td className="py-4 px-6">{ind + 1}</td>
+                  <td className="py-4 px-6 font-medium">{item.product.name}</td>
+                  <td className="py-4 px-6">{item.quantity}</td>
+                  <td className="py-4 px-6">₹{item.product.price}</td>
+                  <td className="py-4 px-6 font-semibold">₹{item.quantity * item.product.price}</td>
+                  <td className="py-4 px-6">
                     <NavLink
                       to={``}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
+                      className="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-600 transition-all duration-300"
                     >
                       View
                     </NavLink>
