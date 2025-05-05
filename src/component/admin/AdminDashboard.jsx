@@ -9,7 +9,6 @@ const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("home");
   const navigate = useNavigate();
 
-  // ADD PRODUCTS
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState({
     img: "",
@@ -21,51 +20,47 @@ const AdminDashboard = () => {
   });
   const [data, setData] = useState({ image: "" });
 
-  // Fetch users on component mount
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
           "https://server-rrb4.onrender.com/api/users"
         );
-        // ✅ Ensure it's always an array
-        setUsers(response.data);
-        console.log(response.data);
-        console.log(users, 'hgfjjh');
-        
-        
+        if (response.data && response.data.users) {
+          setUsers(response.data.users); // Make sure you access the 'users' array
+        } else {
+          setUsers([]); // Fallback in case the 'users' array doesn't exist
+        }
+        console.log(response.data); // To debug and check the response format
       } catch (error) {
         console.error("Failed to fetch users:", error);
-        setUsers([]); // ✅ fallback to empty array on error
+        setUsers([]);
       } finally {
         setLoading(false);
       }
     };
     fetchUsers();
   }, []);
+  
 
-  // Handle user deletion
   const handleDelete = async (userId) => {
     try {
       await axios.delete(
         `https://server-rrb4.onrender.com/api/usersdelet/${userId}`
       );
       setUsers(users.filter((user) => user._id !== userId));
-      alert("User  deleted successfully!");
+      alert("User deleted successfully!");
     } catch (error) {
       console.error("Failed to delete user:", error);
       alert("Failed to delete user.");
     }
   };
 
-  // Handle logout
   const handleLogout = () => {
     localStorage.removeItem("AdminUser Token");
     navigate("/adminlogin");
   };
 
-  // ADD PRODUCTS
-  // Fetch Products
   useEffect(() => {
     if (activeSection === "addItems") {
       fetchProducts();
@@ -94,15 +89,12 @@ const AdminDashboard = () => {
     });
   };
 
-  // FILE UPLOAD IMAGES
   const uploadImage = async (e) => {
     const dataimg = await ImagetoBase64(e.target.files[0]);
     setData({ image: dataimg });
   };
 
   const handleAddProduct = async () => {
-    console.log("Sending Data:", { ...newProduct, img: data.image });
-
     try {
       const response = await axios.post(
         "https://server-rrb4.onrender.com/api/productsadd",
@@ -135,7 +127,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // Delete Product
   const handleDeleteProduct = async (productId) => {
     try {
       await axios.delete(
@@ -149,9 +140,7 @@ const AdminDashboard = () => {
     }
   };
 
-  // Edit Product ADD ITEMS
   const handleEditProduct = async (productId) => {
-    console.log("Editing Product ID:", productId);
     const updatedProduct = products.find(
       (product) => product._id === productId
     );
@@ -188,7 +177,7 @@ const AdminDashboard = () => {
 
       if (response.status === 200) {
         alert("Product updated successfully!");
-        fetchProducts(); // Refresh the product list
+        fetchProducts();
       }
     } catch (error) {
       console.error("Failed to update product:", error);
@@ -241,6 +230,7 @@ const AdminDashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 bg-gray-100 p-6 overflow-auto">
+        {/* HOME DASHBOARD */}
         {activeSection === "home" && (
           <div>
             <h2 className="text-3xl font-bold mb-4">
@@ -249,24 +239,68 @@ const AdminDashboard = () => {
             <p className="text-gray-600 mb-4">
               Here are some quick stats about your platform:
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <div className="bg-white p-4 shadow rounded-lg">
                 <h3 className="text-xl font-semibold">Total Users</h3>
                 <p className="text-3xl font-bold text-gray-800">
-                  {users.totalUsers}
+                  {users.length > 0 ? users.length : 0}
                 </p>
               </div>
               <div className="bg-white p-4 shadow rounded-lg">
                 <h3 className="text-xl font-semibold">Active Users</h3>
                 <p className="text-3xl font-bold text-gray-800">
-                  {users.activeUsersCount}
+                  {users.filter((user) => user.isActive).length}
                 </p>
               </div>
             </div>
+
+            {/* Users Table in Home Section */}
+            {Array.isArray(users) && users.length > 0 ? (
+              <div className="overflow-x-auto mt-4">
+                <h3 className="text-xl font-bold mb-2">All Users</h3>
+                <table className="min-w-full table-auto bg-white shadow rounded-lg">
+                  <thead className="bg-gray-200">
+                    <tr>
+                      <th className="px-4 py-2 text-left">Username</th>
+                      <th className="px-4 py-2 text-left">Email</th>
+                      <th className="px-4 py-2 text-left">Phone</th>
+                      <th className="px-4 py-2 text-left">City</th>
+                      <th className="px-4 py-2 text-left">State</th>
+                      <th className="px-4 py-2 text-left">Country</th>
+                      <th className="px-4 py-2 text-left">Active</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user) => (
+                      <tr key={user._id} className="border-t">
+                        <td className="px-4 py-2">{user.username}</td>
+                        <td className="px-4 py-2">{user.email}</td>
+                        <td className="px-4 py-2">{user.phone || "N/A"}</td>
+                        <td className="px-4 py-2">{user.city || "N/A"}</td>
+                        <td className="px-4 py-2">{user.state || "N/A"}</td>
+                        <td className="px-4 py-2">{user.country || "N/A"}</td>
+                        <td className="px-4 py-2">
+                          {user.isActive ? (
+                            <span className="text-green-600 font-medium">
+                              Yes
+                            </span>
+                          ) : (
+                            <span className="text-red-600 font-medium">No</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <p>No users found.</p>
+            )}
           </div>
         )}
 
-        {/* MANAGE USER PAGE */}
+        {/* MANAGE USERS */}
         {activeSection === "manageUsers" && (
           <div>
             <h2 className="text-3xl font-bold mb-4">Manage Users</h2>
@@ -285,7 +319,7 @@ const AdminDashboard = () => {
                   </thead>
                   <tbody>
                     {users.map((user) => (
-                      <tr key={user.id}>
+                      <tr key={user._id}>
                         <td className="px-4 py-2">{user._id}</td>
                         <td className="px-4 py-2">{user.username}</td>
                         <td className="px-4 py-2">{user.email}</td>
@@ -314,7 +348,7 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* ADD ITEMS PAGE */}
+        {/* ADD ITEMS */}
         {activeSection === "addItems" && (
           <div>
             <h2 className="text-3xl font-bold mb-4">Add Items</h2>
@@ -411,7 +445,7 @@ const AdminDashboard = () => {
                   </thead>
                   <tbody>
                     {products.map((product) => (
-                      <tr key={product.id}>
+                      <tr key={product._id}>
                         <td className="px-4 py-2">{product._id}</td>
                         <td className="px-4 py-2">{product.name}</td>
                         <td className="px-4 py-2">${product.price}</td>
