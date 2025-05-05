@@ -25,11 +25,19 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("https://server-rrb4.onrender.com/api/users");
+        const response = await axios.get(
+          "https://server-rrb4.onrender.com/api/users"
+        );
+        // ✅ Ensure it's always an array
         setUsers(response.data);
-        setLoading(false);
+        console.log(response.data);
+        console.log(users, 'hgfjjh');
+        
+        
       } catch (error) {
         console.error("Failed to fetch users:", error);
+        setUsers([]); // ✅ fallback to empty array on error
+      } finally {
         setLoading(false);
       }
     };
@@ -39,7 +47,9 @@ const AdminDashboard = () => {
   // Handle user deletion
   const handleDelete = async (userId) => {
     try {
-      await axios.delete(`https://server-rrb4.onrender.com/api/usersdelet/${userId}`);
+      await axios.delete(
+        `https://server-rrb4.onrender.com/api/usersdelet/${userId}`
+      );
       setUsers(users.filter((user) => user._id !== userId));
       alert("User  deleted successfully!");
     } catch (error) {
@@ -64,7 +74,9 @@ const AdminDashboard = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("https://server-rrb4.onrender.com/api/products");
+      const response = await axios.get(
+        "https://server-rrb4.onrender.com/api/products"
+      );
       setProducts(response.data);
       setLoading(false);
     } catch (error) {
@@ -126,7 +138,9 @@ const AdminDashboard = () => {
   // Delete Product
   const handleDeleteProduct = async (productId) => {
     try {
-      await axios.delete(`https://server-rrb4.onrender.com/api/products/${productId}`);
+      await axios.delete(
+        `https://server-rrb4.onrender.com/api/products/${productId}`
+      );
       setProducts(products.filter((product) => product._id !== productId));
       alert("Product deleted successfully!");
     } catch (error) {
@@ -239,13 +253,13 @@ const AdminDashboard = () => {
               <div className="bg-white p-4 shadow rounded-lg">
                 <h3 className="text-xl font-semibold">Total Users</h3>
                 <p className="text-3xl font-bold text-gray-800">
-                  {users.length}
+                  {users.totalUsers}
                 </p>
               </div>
               <div className="bg-white p-4 shadow rounded-lg">
                 <h3 className="text-xl font-semibold">Active Users</h3>
                 <p className="text-3xl font-bold text-gray-800">
-                  {users.filter((user) => user.isActive).length || 0}
+                  {users.activeUsersCount}
                 </p>
               </div>
             </div>
@@ -429,4 +443,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-
