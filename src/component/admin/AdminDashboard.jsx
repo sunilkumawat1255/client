@@ -27,11 +27,11 @@ const AdminDashboard = () => {
           "https://server-rrb4.onrender.com/api/users"
         );
         if (response.data && response.data.users) {
-          setUsers(response.data.users); // Make sure you access the 'users' array
+          setUsers(response.data.users);
         } else {
-          setUsers([]); // Fallback in case the 'users' array doesn't exist
+          setUsers([]);
         }
-        console.log(response.data); // To debug and check the response format
+        console.log(response.data);
       } catch (error) {
         console.error("Failed to fetch users:", error);
         setUsers([]);

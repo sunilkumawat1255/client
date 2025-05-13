@@ -19,7 +19,7 @@ const Register = () => {
     phone: "",
   });
 
-  const [countries] = useState(["India", "USA", "Canada"]); // Static country list
+  const [countries] = useState(["India", "USA", "Canada"]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
 
@@ -36,7 +36,6 @@ const Register = () => {
             (state) => state.name
           );
           setStates(fetchedStates);
-          // Only reset if current state is not in fetched list
           if (!fetchedStates.includes(formData.state)) {
             setFormData((prev) => ({ ...prev, state: "", city: "" }));
             setCities([]);
@@ -46,7 +45,6 @@ const Register = () => {
     }
   }, [formData.country]);
 
-  // Load cities initially based on default state
   useEffect(() => {
     if (formData.state) {
       axios
@@ -72,7 +70,6 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Phone number validation (must be 10 digits)
     const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(formData.phone)) {
       toast.error("Phone number must be 10 digits.", { position: "top-right" });

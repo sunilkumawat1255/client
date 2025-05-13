@@ -137,7 +137,6 @@ const Cart = () => {
 
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
-    // Here you can add validation for payment details if needed
     setShowPaymentForm(false);
     handleCheckout();
   };

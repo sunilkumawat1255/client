@@ -17,12 +17,11 @@ const Login = () => {
       try {
         const token = localStorage.getItem("Ecomtoken");
         if (token) {
-          // Decode token to check expiration
-          const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
-          const currentTime = Date.now() / 1000; // Convert to seconds
+          const decodedToken = JSON.parse(atob(token.split(".")[1]));
+          const currentTime = Date.now() / 1000;
 
           if (decodedToken.exp < currentTime) {
-            logoutUser(); // Token expired, log out
+            logoutUser();
             return;
           }
 
@@ -36,7 +35,7 @@ const Login = () => {
         }
       } catch (error) {
         console.error("Auth check failed:", error);
-        logoutUser(); // Log out on any error
+        logoutUser();
       }
     };
     checkAuth();
@@ -66,11 +65,9 @@ const Login = () => {
         localStorage.setItem("EcomUserId", response.data.user.id);
         localStorage.setItem("EcomEmail", response.data.user.email);
 
-        // Decode token to get expiration time
         const decodedToken = JSON.parse(atob(token.split(".")[1]));
-        const expiresIn = decodedToken.exp * 1000 - Date.now(); // Time in ms
+        const expiresIn = decodedToken.exp * 1000 - Date.now();
 
-        // Auto logout when token expires
         setTimeout(logoutUser, expiresIn);
 
         toast.success(`Welcome, ${response.data.user.username.toUpperCase()}!`, {

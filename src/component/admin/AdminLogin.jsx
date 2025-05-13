@@ -19,11 +19,11 @@ const Login = () => {
             headers: { "x-access-token": token },
           });
           if (response.data.login) {
-            navigate("/dashboard"); // Redirect if authenticated
+            navigate("/dashboard");
           }
         } catch (error) {
           console.error("Auth check failed:", error);
-          localStorage.removeItem("AdminUserToken"); // Remove invalid token
+          localStorage.removeItem("AdminUserToken");
         }
       }
     };
@@ -41,7 +41,7 @@ const Login = () => {
       });
   
       if (response.data.login) {
-        localStorage.setItem("AdminUserToken", response.data.token); // Save token
+        localStorage.setItem("AdminUserToken", response.data.token);
   
         toast.success(`Welcome, ${response.data.user.username}!`, {
           position: "top-center",
@@ -49,7 +49,7 @@ const Login = () => {
         });
   
         setTimeout(() => {
-          navigate("/dashboard"); // Redirect to dashboard
+          navigate("/dashboard");
         }, 2000);
       } else {
         toast.error(response.data.message, {
