@@ -16,7 +16,9 @@ const FoodCart = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("https://server-rrb4.onrender.com/products");
+        const res = await axios.get(
+          "https://server-rrb4.onrender.com/products"
+        );
         setProducts(res.data);
         setLoading(false);
       } catch (err) {
@@ -28,7 +30,9 @@ const FoodCart = () => {
     const fetchCart = async () => {
       if (userId) {
         try {
-          const res = await axios.get(`https://server-rrb4.onrender.com/cart/${userId}`);
+          const res = await axios.get(
+            `https://server-rrb4.onrender.com/cart/${userId}`
+          );
           setCart(res.data);
         } catch (err) {
           console.error("Error fetching cart:", err);
@@ -47,18 +51,26 @@ const FoodCart = () => {
     }
 
     try {
+      // Add item to cart on server
       await axios.post(`https://server-rrb4.onrender.com/cart/${userId}`, {
         productId: product._id,
         quantity: 1,
       });
 
+      // Get updated cart from server
+      const res = await axios.get(
+        `https://server-rrb4.onrender.com/cart/${userId}`
+      );
+      const updatedCart = res.data;
+
+      // Save in localStorage and notify Navbar
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      window.dispatchEvent(new Event("cartUpdated"));
+
       toast.success(`${product.name} added to cart successfully!`, {
         position: "top-right",
         autoClose: 3000,
       });
-
-      const res = await axios.get(`https://server-rrb4.onrender.com/cart/${userId}`);
-      setCart(res.data);
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
@@ -88,7 +100,9 @@ const FoodCart = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="text-center text-2xl font-semibold animate-pulse">Loading...</div>
+        <div className="text-center text-2xl font-semibold animate-pulse">
+          Loading...
+        </div>
       </div>
     );
   }
@@ -109,10 +123,16 @@ const FoodCart = () => {
               />
             </Link>
             <div className="p-4">
-              <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
-              <p className="text-gray-600 text-sm">{product.desc.slice(0, 50)}...</p>
+              <h2 className="text-lg font-semibold text-gray-800">
+                {product.name}
+              </h2>
+              <p className="text-gray-600 text-sm">
+                {product.desc.slice(0, 50)}...
+              </p>
               <div className="flex justify-between items-center mt-3">
-                <span className="text-lg font-bold text-green-500">₹{product.price}</span>
+                <span className="text-lg font-bold text-green-500">
+                  ₹{product.price}
+                </span>
                 <span className="flex items-center text-yellow-500 text-sm">
                   <AiFillStar className="mr-1" /> {product.rating}
                 </span>
