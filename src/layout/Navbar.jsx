@@ -9,9 +9,21 @@ const Navbar = () => {
   const [cartCount, setCartCount] = useState(0);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const updateCartCount = () => {
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
     setCartCount(storedCart.length);
+  };
+
+  useEffect(() => {
+    updateCartCount();
+
+    // Listen for cart updates from other components
+    window.addEventListener("cartUpdated", updateCartCount);
+
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener("cartUpdated", updateCartCount);
+    };
   }, []);
 
   const isLoggedIn = !!localStorage.getItem("Ecomtoken");
@@ -32,7 +44,6 @@ const Navbar = () => {
         🍏 FruitsShop
       </Link>
 
-      {/* Mobile Menu Toggle */}
       <button
         className="md:hidden text-gray-800 text-2xl"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -40,7 +51,6 @@ const Navbar = () => {
         {isMenuOpen ? <IoMdClose /> : <IoMdMenu />}
       </button>
 
-      {/* Navigation Links */}
       <nav
         className={`absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent md:flex md:items-center space-y-4 md:space-y-0 md:space-x-6 p-6 md:p-0 shadow-md md:shadow-none transition-all duration-300 ease-in-out ${isMenuOpen ? "block" : "hidden"}`}
       >
@@ -62,7 +72,6 @@ const Navbar = () => {
         )}
       </nav>
 
-      {/* Cart Button */}
       <Link to="/cart" className="fixed bottom-4 right-4 bg-white p-4 rounded-full shadow-lg z-50 transition hover:scale-105">
         <div className="relative">
           <FaCartArrowDown className="text-xl text-gray-800" />
