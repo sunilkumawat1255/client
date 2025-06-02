@@ -17,6 +17,8 @@ import PrivateRoute from "./component/admin/PrivateRoute";
 import ManageUsers from "./component/admin/ManageUsers";
 import Hero from "./component/Hero/Hero";
 import Contact from "./component/contact/contact";
+import PaymentSuccess from "./page/PaymentSuccess";
+import PaymentCancel from "./page/PaymentCancel";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -64,6 +66,14 @@ const App = () => {
           <Navbar /> <MyAccount />{" "}
         </>
       ),
+    },
+    {
+      path: "/success",
+      element: <PaymentSuccess />,
+    },
+    {
+      path: "/cancel",
+      element: <PaymentCancel />,
     },
 
     // ADMIN KE ROUTE

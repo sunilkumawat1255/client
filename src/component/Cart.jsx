@@ -4,6 +4,7 @@ import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { FaTrash, FaPlus, FaMinus, FaShoppingCart } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const userId = localStorage.getItem("EcomUserId");
@@ -11,7 +12,6 @@ const Cart = () => {
   const [imageUrls, setImageUrls] = useState([]);
   const [loading, setLoading] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [paymentDetails, setPaymentDetails] = useState({
     cardNumber: "",
@@ -77,25 +77,7 @@ const Cart = () => {
     }
   };
 
-  const handleCheckout = async () => {
-    setCheckoutLoading(true);
-    try {
-      if (userId) {
-        await axios.post(`https://server-rrb4.onrender.com/checkout/${userId}`);
-        await axios.delete(`https://server-rrb4.onrender.com/cart/${userId}/clear`);
-        setCartItems([]);
-        setShowSuccess(true);
-        setTimeout(() => {
-          setShowSuccess(false);
-          navigate("/");
-        }, 2000);
-      }
-    } catch (error) {
-      console.error("Checkout failed:", error);
-    } finally {
-      setCheckoutLoading(false);
-    }
-  };
+
 
   const handleIncrement = async (cartItemId) => {
     if (userId) {
@@ -135,10 +117,68 @@ const Cart = () => {
     }
   };
 
+  const handleStripeCheckout = async () => {
+    if (!userId) {
+      toast.error("Please log in to continue with checkout");
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty");
+      return;
+    }
+
+    setCheckoutLoading(true);
+
+    try {
+      const userEmail = localStorage.getItem("EcomEmail");
+
+      if (!userEmail) {
+        toast.error("User email not found. Please log in again.");
+        setCheckoutLoading(false);
+        return;
+      }
+
+      // Create Stripe checkout session
+      const response = await axios.post(
+        `https://server-rrb4.onrender.com/create-checkout-session/${userId}`,
+        { email: userEmail },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (response.data.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = response.data.url;
+      } else {
+        throw new Error("No checkout URL received");
+      }
+    } catch (error) {
+      console.error("Stripe checkout failed:", error);
+      toast.error(
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        "Failed to create checkout session. Please try again."
+      );
+      setCheckoutLoading(false);
+    }
+  };
+
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
+
+    // Basic form validation
+    if (!paymentDetails.cardNumber || !paymentDetails.expiryDate || !paymentDetails.cvv) {
+      toast.error("Please fill in all payment details");
+      return;
+    }
+
+    // Close the form and proceed with Stripe checkout
     setShowPaymentForm(false);
-    handleCheckout();
+    handleStripeCheckout();
   };
 
   const totalAmount = cartItems.reduce(
